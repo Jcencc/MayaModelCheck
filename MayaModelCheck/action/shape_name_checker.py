@@ -35,3 +35,13 @@ class ShapeNameChecker(Action):
                         blackboard.get('shapeError', []).append(shape)
 
         return Status.SUCCESS
+
+
+class ShapeNameFix(Action):
+    def execute(self, blackboard: Blackboard) -> Status:
+        import maya.cmds as cmds
+        print('shape名称修复中.....', "\n")
+        for path in blackboard.get('shapeError') or []:
+            print("  ", path, "--->", path.split('|')[-1].replace('Shape', '') + 'Shape', "\n")
+            cmds.rename(path, path.split('|')[-1].replace('Shape', '') + 'Shape')
+        return Status.SUCCESS  # 语义正确：数据更新成功
